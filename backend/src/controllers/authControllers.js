@@ -15,7 +15,7 @@ const registerUser= async (req, res)=>{
         const hashedPass = await bcrypt.hash(password, 10);
         const user = await User.create({
             email,
-            hashedPass
+            password:hashedPass
         })
     
         res.json({
@@ -28,4 +28,38 @@ const registerUser= async (req, res)=>{
     }
 }
 
-export default registerUser
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.json({
+                message: "User not found"
+            });
+        }
+
+        const matchPass = await bcrypt.compare(password, user.password);
+        if (!matchPass) {
+            return res.json({
+                message: "Invalid credentials"
+            });
+        }
+
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET_KEY);
+
+        res.json({
+            message: "User logged in successfully",
+            token
+        });
+    } catch (error) {
+        res.json({
+            message: "Failed to login",
+            error: error.message
+        });
+    }
+};
+
+
+export  {registerUser, loginUser}
