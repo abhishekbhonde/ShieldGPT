@@ -1,6 +1,6 @@
 import { model } from "mongoose";
-import Prompt from "../models/prompt";
-import { encrypt, decrypt } from "../utils/encryptor";
+import Prompt from "../models/prompt.js";
+import { encrypt, decrypt } from "../utils/encryptor.js";
 import axios from "axios";
 
 
@@ -36,4 +36,4 @@ const sendRequest = async()=>{
 
 }
 
-export default sendRequest
+export {sendRequest}

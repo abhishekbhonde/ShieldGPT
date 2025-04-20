@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+import mongoose from "mongoose";
 const promptSchema = new mongoose.Schema({
   encryptedInput: { type: String, required: true },
   encryptedResponse: { type: String },
